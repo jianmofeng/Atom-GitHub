@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    fieldset {
+      margin-bottom: 1em;
+    }
+
+    input {
+      display: block;
+      margin-bottom: .25em;
+    }
+
+    #print-output {
+      width: 100%;
+    }
+
+    .print-output-line {
+      white-space: pre;
+      padding: 5px;
+      font-family: monaco, monospace;
+      font-size: .7em;
+    }
+  </style>
+</head>
+
+<body>
+  <form>
+    <fieldset>
+      <legend>望好</legend>
+      <label for="target">Type Something:</label>
+      <input id="target" type="text" />
+    </fieldset>
+  </form>
+  <button id="other">
+  Trigger the handler
+</button>
+  <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+  <script>
+    var xTriggered = 0;
+    $('#target').keydown(function(event) {
+      if (event.which == 13) {
+        event.preventDefault();
+        //alert(1)
+      }
+      xTriggered++;
+      var msg = 'Handler for .keydown() called ' + xTriggered + ' time(s).';
+      console.log(msg);
+      console.log(event);
+    });
+
+    $('#other').click(function() {
+      $('#target').keydown();
+    });
+  </script>
+
+</body>
+
+</html>

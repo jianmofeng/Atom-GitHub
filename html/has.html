@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>has选择器</title>
+	<style>
+		.active {
+			background: red;
+			color: #fff;
+		}
+		.div{
+			width: 400px;
+			height: 300px;
+			background: url(../img/111.png) no-repeat 100% center;
+		}
+	</style>
+	<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<table class="table table-bordered">
+		<tr>
+			<td>tweet</td>
+			<td>swiper</td>
+			<td>bootstrap</td>
+			<td>jquery</td>
+			<td>angular</td>
+		</tr>
+		<tr>
+			<td><div>react native</div></td>
+			<td>baidu</td>
+			<td><p>react</p></td>
+			<td>tencer</td>
+			<td>git</td>
+		</tr>
+		<tr>
+			<td><p>node</p></td>
+			<td><div>git</div></td>
+			<td>yarn</td>
+			<td>github</td>
+			<td>gulp</td>
+		</tr>
+	</table>
+	<div class="div">
+		
+	</div>
+	<div>
+		<button class="btn btn-success" style="float: left;">
+			搜索p标签
+		</button>
+	</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
+<script>
+	$('.btn').click(function(){
+		$('td:has(p)').addClass('active');
+	})
+</script>
+</html>、

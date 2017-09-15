@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+
+	<%@ page pageEncoding="UTF-8"%>
+<%@ include file="/pages/common/tags.jsp" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>供应商采购订单下单页面</title>
+<%@ include file="/pages/common/eps_meta.jsp" %>
+<link rel="stylesheet" href="${ctx}/scripts/common/ui/ui-dialog/skin/default/ui-dialog.css"/>
+<link rel="stylesheet" href="${ctx}/scripts/common/uigrid/uigrid.css?v=${ver}"/>
+<link rel="stylesheet" href="${ctx}/styles/common/per-accessories.css?v=${ver}" />
+</head>
+<body style="overflow:hidden;">
+	<div class="ui-mainContent per-transaction permar-2 sufmar-2">
+		<div class="ordertoolbar">
+			<div class="pull-left">
+				<input id="PO_save" type="button" value="<gap:message key='eps.button.common.save'/>" class="btn btn-green bomar-1"/>
+				<input id="PO_return" type="button" value="<gap:message key='eps.button.common.return'/>" class="btn btn-gray bomar-1"/>
+			</div>
+			<div class="pull-right">
+				<button class="btn btn-green search_show">收起</button>
+			</div>
+		</div>
+		<div id="ui-layout1-mainRightSearch">
+			<div class="wrapper-sm">
+	       		<form id="form_mst" class="clearfix m-b-sm">
+					<input id="checkStatus" name="checkStatus" type="hidden" value="0"/>
+					<div class="form-wrap pull-left">
+						<label class="search-title">工厂编号:</label>
+						<input id="plantCode" name="plantCode" type="text"  value="${mstDTO.plantCode}" class="form-control per-width-x" readonly="readonly"/>
+					</div>
+					<div class="form-wrap pull-left">
+						<label class="search-title text-ellipsis"><font class='text-danger'>* </font>供应商编号:</label>
+						<div class="form-selector per-width-x" data-selector="supplier" data-related="#supplierName">
+							<input id="supplierCode" name="supplierCode" type="text"  value="${mstDTO.supplierCode}" class="form-control" readonly="readonly">
+							<input type="hidden" id="supplierId" name="supplierId" class="form-control required" data-selector="supplier" value="${mstDTO.supplierId}" />
+							<div class="ui-input-icon ui-icon-more"></div>
+						</div>
+					</div>
+					<div class="form-wrap pull-left">
+						<label class="search-title">供应商名称:</label>
+						<input id="supplierName" name="supplierName" type="text"  value="${mstDTO.supplierName}" class="form-control per-width-x" readonly="readonly" data-selector="supplier"/>
+					</div>
+					
+					<div class="form-wrap pull-left">
+						<label class="search-title"><font class='text-danger'>* </font>订单号:</label>
+						<input id="billId" name="billId" type="hidden" value="${mstDTO.billId}" class="ui-formInput1 per-width-x required"/>
+						<input id="billCode" name="billCode" type="text" value="${mstDTO.billCode}" class="form-control per-width-x required"  readonly="readonly"/>
+					</div>
+					<div class="form-wrap pull-left">
+						<label class="search-title"><font class='text-danger'>* </font>订单日期:</label>
+						<input id="orderDate" name="orderDate" class="form-control ui-wdate1 per-width-x" value="${mstDTO.orderDateStr}"/>
+					</div>
+					<div class="form-wrap pull-left">
+						<label class="search-title">关联单据:</label>
+						<input id="scBillCode" name="scBillCode" type="text"  value="${mstDTO.scBillCode}" class="form-control per-width-x" readonly="readonly"/>
+					</div>
+					<gap:if test="${materialType == 'TPJX'}">
+					<div class="form-wrap pull-left">
+						<label class="search-title"><font class='text-danger'>* </font>收货地址:</label>
+						<div class="form-selector per-width-x" data-selector="address">
+							<input type="text" id="address" name="address" value="${mstDTO.address}" class="form-control ui-formInput-text-beta3" readonly="readonly"/>
+							<div class="ui-input-icon ui-icon-more"></div>
+						</div>
+					</div>
+					</gap:if>
+					<div class="form-wrap pull-left">
+						<label class="search-title">备注:</label>
+						<input id="remark" name="remark"  value="${mstDTO.remark}" type="text" class="form-control per-width-x-col5"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- 表格信息开始（分页、查看方式等） -->
+		
+		<div class="orderlist uigrid layout1">
+			
+		</div>
+	</div>
+</body>
+<%@ include file="/pages/common/eps_scripts.jsp" %>
+<script type="text/javascript">
+	seajs.use('pb/purchaseorder/poorder.js?=${ver}', function(render){
+		render.init({ctx: '${ctx}',checkStatus: '${checkStatus}',billType:'${mstDTO.billType}',data: ${mstDTO.dtlList}});
+	});
+</script>
+
+
+</html>
+</body>
+</html>
+<script>
+
+
+	define(function(require, exports, module) {
+	var $ = require('jquery');
+	var dialog = require('dialog');
+	var JSON = require('json');
+	var WdatePicker = require('date');
+	var Validate = require('validate');
+	var Utils = require('utils');
+	var Helper = require('common/widget.helper');
+	var uigrid = require('uigrid');
+	require('common/widget.inputs');
+	require('common/widget.selector');
+	var render = {
+		init : function(context) {
+			this.context=context;
+			this.bindEvent();
+			data = context.data;
+			this.initGrid();
+		},
+		model: [{
+			header: "序号",
+			type: "index"
+		},{
+			header: "物料编号",
+			width: 120,
+			property: "materialCode"
+		},{
+			header: "物料名称",
+			width: 150,
+			property: "materialName"
+		},{
+			header: "规格型号",
+			width: 160,
+			property: "model"
+		},{
+			header: "单位",
+			width: 70,
+			property: "unitName"
+		},{
+			header: "品牌",
+			width: 70,
+			property: "brand"
+		},{
+			header: "采购数量",
+			width: 70,
+			property: "purchaseQtyStr"
+		},{
+			header: "订单数量",
+			width: 70,
+			edit: {
+				type: 'input'
+			},
+			property: "qtyStr"
+		},{
+			header: "单价",
+			width: 50,
+			property: "priceStr",
+			edit: {
+				type: 'input'
+			}
+		},{
+			header: "交货期",
+			required: true,
+			width: 90,
+			edit: {
+				type: 'input'
+			},
+			property: "deliveryDaysStr"
+		},{
+			header: "采购类型",
+			property: "poType",
+			width: 100,
+			edit: {
+				type: 'select',
+                option: [{
+                	name: '自有',
+                	value: 0
+                },{
+                	name: '寄售',
+                	value: 1
+                }]
+			}
+		},{
+			header: "备注",
+			property: "remark",
+			width: 160,
+			edit: {
+				type: 'input'
+			}
+		}],
+		ifmodel: function(){
+			var _this = this;
+			var model = _this.model;
+			var price = {header: "单价",width: 50,property: "priceStr"};
+			var selecteds = {header: "采购类型",property: "poType",width: 100,edit: {type: 'select',option: [{name: '寄售',value: 1},{name: '自有',value: 0}]}};
+			for(var i in data){
+				if(data[i].isEstimated != 1){
+					model.splice(8,1,price)
+				}
+				if(data[i].poType == 'K'){
+					model.splice(10,1,selecteds)
+				}
+			};
+			return model;
+		},
+		initGrid:　function(){
+			var _this = this;
+        	_this.grid = $(".uigrid").uigrid({
+        		menuExt: false,
+        		rowModel : {
+					rowModelList: _this.ifmodel()
+				}
+        	});
+        	_this.grid.addRow(data);
+		},
+		bindEvent : function() {
+			var _this = this;
+			$('.search_show').bind('click',function(){
+				var search = $('.wrapper-sm');
+				if(search.is(':hidden')){
+					search.show("fast",function(){
+						_this.grid.resize();
+					});
+					$(this).html('收起');
+				}else{
+					search.hide("fast",function(){
+						_this.grid.resize();
+					});
+					$(this).html('展开');
+				}
+			});
+			//订单日期
+			$('#orderDate').click(function(){
+        		WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd'});
+        	});
+
+			//选择交货地址
+			$("div[data-selector=address]>.ui-icon-more").click(function(e) {
+				e.preventDefault();
+				_this.selectAddress();
+			});
+			
+			//变更交货期
+			$('input[name=deliveryDaysStr]').live('change',function(e){
+				var slef = $(this);
+				e.preventDefault();
+
+				var deliveryDays = $.trim(slef.val());
+				if(!deliveryDays){deliveryDays=0;}
+				if(!$.isNumeric(deliveryDays)){
+					Helper.alert('第' + slef.parents("tr")[0].rowIndex+"行明细，交货期请正确输入须为数字！");
+					slef.val(deliveryDays);
+					return false;
+				}
+				deliveryDays = Helper.toNumeric(deliveryDays);
+				slef.val(deliveryDays);
+			});
+            
+			//修改订单数量
+	         $('input[name=qtyStr]').live('change',function(e){
+	                var slef = $(this);
+	                e.preventDefault();
+
+	                var qty = $.trim(slef.val());
+	                var purchaseQty = parseInt($(slef).parent().parent().prev().attr('title')) ;
+	                if(!qty){qty=0;}
+	                if(!$.isNumeric(qty)){
+	                    Helper.alert('第' + (parseInt(slef.parents("tr")[0].rowIndex)+1)+"行明细，订单数量请正确输入须为数字！");
+	                    slef.val(qty);
+	                    return false;
+	                }else {
+	                    if(Helper.toNumeric(qty)>Helper.toNumeric(purchaseQty)){
+	                        Helper.alert('第' + (parseInt(slef.parents("tr")[0].rowIndex)+1)+"行明细，订单数量不能大于采购数量！");
+	                        slef.val(purchaseQty);
+	                        return false;
+	                    }
+	                }
+	            });
+			
+			//返回
+			$('#PO_return').click(function(e) {
+				e.preventDefault();
+				Helper.closeDialogOk("po_order");
+			});
+			//保存
+			$('#PO_save').click(function(e) {
+				e.preventDefault();
+				var poObj = _this.getPOObj();
+				if(!poObj) {
+					return false;
+				}
+				var supplierId = $('#supplierId').val();
+				if(supplierId == null || supplierId == "") {
+					Helper.error("供应商编号不能为空!");
+					return false;
+				}
+				var orderDate = $('#orderDate').val();
+				if(orderDate == null || orderDate == "") {
+					Helper.error("订单日期不能为空!");
+					return false;
+				}
+				poObj.supplierId = supplierId;
+				poObj.orderDate = orderDate;
+				var po_modify_dialog = dialog.showDialog({
+                    value: '订单号：'+poObj.billCode+'，确定要下单吗？',
+                    buttons: [{
+                        value: '确定',
+                        func: function() {
+                        	po_modify_dialog.close();
+							$.ajax({
+				                    url: ctx + '/pb/purchaseorder/pomodifyexcute.htm',
+				                    type: 'post',
+				                    dataType: 'json',
+				                    data: {poJson:JSON.stringify(poObj)},
+				                    callback: function(result) {
+				                        if (result.success) {
+				                        	 Utils.Notice.operatorMessage(result.message);
+											 $('#PO_return').click();
+				                        } else {
+											 Helper.error(result.message);
+				                        }
+				                    }
+				              });
+                        }
+                    }, {
+                        btnStyle: 'gray',
+                        value: '取消',
+                        func: function() {
+                        	po_modify_dialog.close();
+                        }
+                    }]
+                });
+			});
+		},
+		getPOObj : function() {
+			var _this = this;
+			var mstValid = Validate.validate();
+			if(!mstValid) {
+				return null;
+			}
+			var dtlList = _this.grid.getAllData();
+			if(!dtlList || !dtlList.length) {
+				Helper.alert("请添加采购订单明细！");
+				return null;
+			}
+			var dtlsValid = true;
+			$.each(dtlList, function(i, dtl) {
+				var vld = _this.validateDtl(i, dtl);
+				dtlsValid = !!vld;
+				return dtlsValid;
+			});
+			if(!dtlsValid) {
+				return null;
+			}
+
+			var result = Utils.Form.fFormToJson($('#form_mst'));
+			//操作类型：下单
+			result.doType='order';
+			result.dtlList = dtlList;
+			return result;
+		},
+		//选择交货地点
+		selectAddress : function(){
+			dialog.showDialog({
+				id : 'address_dialog',
+				url : window.ctx + '/pb/purchaseorder/address.htm',
+				title : '选择交货地址',
+	            width: 380,
+	            contentHeight: 400,
+	            callback : function(address) {
+	            	$("#address").val(address);
+	            }
+			});
+		},
+		validateDtl: function(i, dtl) {
+			var _this = this;
+			var _this = this;
+			var prefix = "明细项第 " + (i + 1) + " 行，";
+			if(!dtl || !dtl.materialId) {
+				Helper.alert(prefix + "没添加物料信息！");
+				return false;
+			}
+			if(!$.isNumeric(dtl.qtyStr)) {
+				Helper.alert(prefix + "订货数量须输入数字！");
+				return false;
+			}
+			var qty = Helper.toNumeric(dtl.qtyStr);
+			if(qty < 0) {
+				Helper.alert(prefix + "订货数量须大于零！");
+				return false;
+			}
+			var deliveryDays = Helper.toNumeric(dtl.deliveryDaysStr);
+			if(deliveryDays <= 0) {
+				Helper.alert(prefix + "交货期须大于零！");
+				return false;
+			}
+			return true;
+		}
+	};
+	module.exports = render;
+});
+
+</script>

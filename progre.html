@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			.progr {
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 3px;
+				background: #2a6496;
+
+			}
+			
+			body {
+				height: 2000px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="progr">
+
+		</div>
+	</body>
+	<script>
+		(function() {
+			var wh = window.innerHeight; //浏览器窗口的内部高度
+			var h = document.body.getBoundingClientRect().height;//设置的body的高度
+			var dh = h - wh;
+			window.addEventListener('scroll', function() {
+				window.requestAnimationFrame(function() {//将告知浏览器你马上要开始动画效果了，后者需要在下次动画前调用相应方法来更新画面。这个方法就是传递给window.requestAnimationFrame()的回调函数。
+					var percent = Math.max(0, Math.min(1, window.pageYOffset / dh));
+					document.querySelector(".progr").style.width = percent * 100 + '%';
+				})
+			}, false);
+		})();
+	</script>
+</html>

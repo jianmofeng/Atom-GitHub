@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<ul id="cc">
+		<li>1</li>
+		<li>4</li>
+		<li>3</li>
+		<li>2</li>
+		<li>5</li>
+	</ul>
+	<script>
+	var ul = document.getElementById('cc');
+	var li = ul.children;
+	var arr = [];
+	for(var i =0; i<li.length;i++) {
+		var a = li[i].innerHTML;
+		//alert(a);
+		console.log(a);
+		arr.push(a);
+	}
+	arr.sort();
+	// for(var k =0; k<arr.length;k++) {
+	// 	li[k].innerText = arr[k]
+	// }
+	/*console.log(li.length)
+	function aa(a,b){
+		if (a > b) {
+			return {
+				a
+			};
+		} else {
+			return {
+				b
+			};
+		}
+	}
+	aa(3,1);	*/
+	function Cat(name) {
+	    this.name = name;
+	}
+	Cat.prototype = {
+			say: function(){
+				 return ('Hello, '+this.name+'!')
+			}
+	}
+	var kitty = new Cat('Kitty');
+	var doraemon = new Cat('哆啦A梦');
+	// if (kitty && kitty.name === 'Kitty' && kitty.say && typeof kitty.say === 'function' && kitty.say() === 'Hello, Kitty!' && kitty.say === doraemon.say) {
+	//     alert('测试通过!');
+	// } else {
+	//     alert('测试失败!');
+	// }
+	function Student(props) {
+	    this.name = props.name || 'Unnamed';
+	}
+	Student.prototype.hello = function () {
+	    alert('Hello, ' + this.name + '!');
+	}
+	function Parise(props) {
+			this.name = name;
+			Student.call(this, props);
+			this.grade = props.grade || 1;
+	}
+	</script>
+</body>
+</html>

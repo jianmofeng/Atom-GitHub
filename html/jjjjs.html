@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 	<style>
-		.box{
+		.box {
 			width: 200px;
 			height: 50px;
 		}
-		img{
+
+		img {
 			float: left;
 		}
 	</style>
 </head>
+
 <body>
 	<div class="box">
 		<img src="http://newtab.firefoxchina.cn/img/sitenav/logo.png" alt="图片">
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 	<script>
-	var cat = true;
-	$('.box').on('click',function(){
-		if(cat){
-			$(this).addClass('animated bounce');
-			cat = false;
-		}else{
-			$(this).removeClass('animated bounce');
-			cat = true;
-		}
-	})
+		var cat = true;
+		$('.box').on('click', function() {
+			//////////////////
+			if (cat) {
+				$(this).addClass('animated bounce');
+				cat = false;
+			} else {
+				$(this).removeClass('animated bounce');
+				cat = true;
+			}
+		})
 	</script>
 	<script>
-		var vv = ['a','b','c'];
+		var vv = ['a', 'b', 'c'];
 		/*for(var i in vv){
 			console.log(vv[i]);
 		}
@@ -65,16 +69,15 @@
 		var arr = ['1','2','3','4','5'];
 		arr.map(Number);
 		//var arr = ['1','3','5','7','9'];*/
-		function product(arr){
-			return arr.reduce(function (x,y) {
+		function product(arr) {
+			return arr.reduce(function(x, y) {
 				return x * y;
 			})
 		};
 		if (product([1, 2, 3, 4]) === 24 && product([0, 1, 2]) === 0 && product([99, 88, 77, 66]) === 44274384) {
-		    alert('测试通过!');
-		}
-		else {
-		    alert('测试失败!');
+			alert('测试通过!');
+		} else {
+			alert('测试失败!');
 		}
 		//product([1, 2, 3, 4])
 		// function string2int(s) {
@@ -85,9 +88,9 @@
 		// 	return a.map(Number);
 		// };
 		function string2int(s) {
-	        /*s.reduce(function(x,y){
+			/*s.reduce(function(x,y){
 
-	        })*/
+			})*/
 			return s.map(Number);
 		};
 		/*if (string2int('0') === 0 && string2int('12345') === 12345 && string2int('12300') === 12300) {
@@ -104,8 +107,8 @@
 		}*/
 	</script>
 	<script>
-		var r,arr = ['apple', 'strawberry', 'banana', 'pear', 'apple', 'orange', 'orange', 'strawberry'];
-		r = arr.filter(function(e,index,self) {
+		var r, arr = ['apple', 'strawberry', 'banana', 'pear', 'apple', 'orange', 'orange', 'strawberry'];
+		r = arr.filter(function(e, index, self) {
 			//indexOf返回字符首次出现的位置
 			return self.indexOf(e) === index;
 		})
@@ -124,21 +127,22 @@
 			   	return true;
 			});
 			return d;*/
-			return arr.filter( function (value, index, self) {
-				for ( var i = 2; i < value; i++){
-					if ((value % i)=== 0) break;
+			return arr.filter(function(value, index, self) {
+				for (var i = 2; i < value; i++) {
+					if ((value % i) === 0) break;
 				}
 				return i === value;
 			})
 		}
 		var
-		    x,
-		    a,
-		    arr1 = [];
+			x,
+			a,
+			arr1 = [];
 		for (x = 1; x < 100; x++) {
-		    arr1.push(x);
+			arr1.push(x);
 		}
 		a = get_primes(arr1);
 	</script>
 </body>
+
 </html>

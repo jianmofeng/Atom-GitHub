@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var r1, r2, s = null;
+    try {
+        r1 = s.length;
+        r2 = 100;
+    } catch (e) {
+        ///alert("出错了");
+    } finally {
+        console.log('finally');
+    }
+    console.log('r1 = ' + r1);
+    console.log('r1 = ' + r2);
+    // ..先触发try里面的代码，如果try里面的代码有错误的话 不再继续执行跳入catch中，
+    // 然后进入finally中。finally无论如何都会被触发。另外有可能出错的代码才放入try
+    // 并且catch和finally可以不全写上。
+    // ---------------------------------------------------------------
+    // javascript 有一个标准的error对象表示错误， 还有从erro对象派生出来的TypeError和ReferenceError
+    // 等错误对象。 我们在处理错误时可以通过catch(e) 中的e来捕获错误对象
+    try {
+        //...
+    } catch (e) {
+        if (e instanceof TypeError) {
+            console.log('....');
+        } else if (e instanceof Error) {
+            console.log('....');
+        } else {
+            console.log('...');
+        }
+    } finally {
+
+    }
+    // 抛出错误 try语句可以主动抛出错误，然后使执行流程自动跳到catch中。抛出错误使用throw
+    var r, n, s;
+    try {
+        s = prompt('请输入一个数字');
+        n = parseInt(s);
+        if (isNaN(n)) {
+            throw new Error('输入错误');
+        }
+        // 计算平方:
+        r = n * n;
+        alert(n + ' * ' + n + ' = ' + r);
+    } catch (e) {
+        alert('出错了：' + e);
+    }
+</script>
+
+</html>

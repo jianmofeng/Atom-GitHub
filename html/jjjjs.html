@@ -75,7 +75,7 @@
 			})
 		};
 		if (product([1, 2, 3, 4]) === 24 && product([0, 1, 2]) === 0 && product([99, 88, 77, 66]) === 44274384) {
-			alert('测试通过!');
+			//alert('测试通过!');
 		} else {
 			alert('测试失败!');
 		}
@@ -142,6 +142,15 @@
 			arr1.push(x);
 		}
 		a = get_primes(arr1);
+
+		function obj(name, sex, clas) {
+			this.name = name;
+			this.sex = sex;
+			this.class = clas;
+			console.log(arguments);
+			console.log(this.name + this.sex + this.class);
+		}
+		var cc = new obj("小明", 16, 44);
 	</script>
 </body>
 

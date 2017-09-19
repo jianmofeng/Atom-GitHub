@@ -1,108 +1,24 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<style>
-			/* body{
-				width: 100%;
-				height: 100%;
-				background-image: linear-gradient( 135deg, #81FBB8 10%, #28C76F 100%);
-				background-image: linear-gradient( 135deg, #F6D242 10%, #FF52E5 100%);
-			} */
-			body,html{
-				margin: 0;
-				padding: 0;
-			}
-			.ba{
-				width:100px;
-				height: 20px;
-			}
-			.posi{
-				position: absolute;
-				left: 0;
-				top: 0;
-			} 
-		</style>
-	</head>
-	<body>
-		<select name="" id="sel" class="ba">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-		</select>
-		<input type="text" class="ba posi" >
-	</body>
-	<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+
+<body>
+	<button type="button" class="btn">点击</button>
+</body>
+<script type="text/javascript" src="./js/underscore.js"></script>
+<script type="text/javascript">
+	var arr = [1, 2, 3, 4];
+	var arr2 = _.each(arr, console.log);
+	var btn = document.querySelector('.btn');
+	btn.onclick = function() {
+		alert(1)
+	}
+</script>
+
 </html>
-//送货通知修改
-<div class="orderlist border-lr">
-	<div class="orderlist-title-container">
-		<table class="orderlist-title">
-			<tr>
-				<th><div style="width:35px;">序号</div></th>
-				<th><div style="width:90px;">物料编号</div></th>
-				<th><div class="table-matname">物料名称</div></th>
-				<th><div class="table-model">规格型号</div></th>
-				<th><div style="width:50px;">单位</div></th>
-				<th><div style="width:50px;">品牌</div></th>
-				<th><div style="width:50px;">交货期</div></th>
-				<th><div class="table-qty4"><span class="ui-fontSty-red">*</span>发货数量</div></th>
-				<th><div class="table-qty4">包装定量</div></th>
-				<th><div class="table-qty4">包装箱数</div></th>
-				<th><div style="width:50px;">单价</div></th>
-				<th><div style="width:50px;">金额</div></th>
-				<th><div style="width:70px;">采购类型</div></th>
-				<th><div style="width:100px;">备注</div></th>
-			</tr>
-		</table>
-	</div>
-	<div class="orderdetail-body">
-		<table class="orderdetail">
-			<gap:forEach items="${mstDTO.dtlList}" var="dtlDTO" varStatus="vs">
-				<tr <gap:if test="${vs.count%2==0}">class="odd"</gap:if>>
-					<td><div style="width:35px;">${vs.count}</div></td>
-					<td>
-						<input type="hidden" name="itemId" value="${dtlDTO.itemId}"/>
-						<input type="hidden" name="billId" value="${dtlDTO.billId}"/>
-						<input type="hidden" name="materialId" value="${dtlDTO.materialId}"/>
-						<div style="width:90px;">${dtlDTO.materialCode}</div>
-					</td>
-					<td><div class="table-matname">${dtlDTO.materialName}</div></td>
-					<td><div class="table-model">${dtlDTO.model}</div></td>
-					<td><div style="width:50px;">${dtlDTO.unitName}</div></td>
-					<td><div style="width:50px;">${dtlDTO.brand}</div></td>
-					<td><div style="width:50px;">${dtlDTO.deliveryDaysStr}</div></td>
-					<td>
-						<div class="table-qty4">
-							<input type="text" name="deliveryQty" value="${dtlDTO.deliveryQtyStr}" class="ui-formInput1 required" />
-						</div>
-					</td>
-					<td>
-						<div class="table-qty4">
-							<input type="text" name="packageRation" value="${dtlDTO.packageRation}" class="ui-formInput1"/>
-						</div>
-					</td>
-					<td>
-						<div class="table-qty4">
-							<input type="text" name="packageNum" value="${dtlDTO.packageNum}" class="ui-formInput1"/>
-						</div>
-					</td>
-					<td><div style="width:50px;">${dtlDTO.priceStr}</div></td>
-					<td><div style="width:50px;">${dtlDTO.amountStr}</div></td>
-					<td>
-						<div style="width:70px;">
-							<gap:if test="${dtlDTO.poType!='K'}">自有</gap:if>
-							<gap:if test="${dtlDTO.poType=='K'}">寄售</gap:if>
-						</div>
-					</td>
-					<td>
-						<div style="width:100px;">
-							<input type="text" name="remark" value="${dtlDTO.remark}" class="ui-formInput1"/>
-						</div>
-					</td>
-				</tr>
-			</gap:forEach>
-		</table>
-	</div>
-</div>

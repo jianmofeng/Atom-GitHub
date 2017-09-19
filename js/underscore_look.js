@@ -8,14 +8,14 @@
         ObjProto = Obj.prototype,
         FuncProto = FuncProto.prototype;
     // 原注释翻译为：为快速访问核心原型创建快速参考变量 。应该是后面需要调用和使用 先将变量建出来
-    var
-        push = ArrayProto.push,
+
+    var push = ArrayProto.push,
         slice = ArrayProto.slice,
         toString = ObjProto.toString,
         hasOwnProperty = ObjProto.hasOwnProperty;
     // 为所有的使用的函数兼容ES5（原翻译：所有的本地函数实现ECMAScript 5我们希望使用的声明在这里）
-    var
-        nativeIsArray = Array.isArray,
+
+    var nativeIsArray = Array.isArray,
         nativeKeys = Object.keys,
         nativeBind = FuncProto.bind,
         nativeCreate = Object.create;
@@ -52,7 +52,7 @@
                 return function(value, other) {
                     return func.call(context, value, other)
                 };
-            case 3:
+            case 3: //如果context ！== undefined，就是说传入了context，则把传入数组的value，index，collection放入。value==传入的每一个元素,index就是索引值，collection应当指当前数组
                 return function(value, index, collection) {
                     return func.call(context, value, index, collection)
                 };
@@ -73,7 +73,7 @@
         return _.property(value);
     };
     _.iteratee = function(value, context) {
-        return cb(value, context, Infinity);
+        return cb(value, context, Infinity); //Infinity 表示存放无穷大的数据
     };
     //创建一个内部函数分配器
     var createAssiger = function(keysFunc, undefinedOnly) {
@@ -101,9 +101,28 @@
         Ctor.prototype = null;
         return result; // 借一个空变量来作为交换实现继承
     };
+    // 用于收集方法的助手，以确定集合是否应作为数组或作为对象进行迭代。
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1; // Math.pow(x,y) 计算x的y次方的值
     var isArrayLike = function(collection) {
-        var length = collection && collection.length;
-        return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+        var length = collection && collection.length; //  collection的长度
+        return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX; // 如果length是数值并且大于等于0且小于2的53次方，则返回true
+    };
+    // _.each()方法
+    //forEach = function(currentValue, index, arr) 其中currentValue指的是当前元素，index指的是当前索引，arr指当前对象
+    //但在这不一样 obj指的是_each传入参数的第一位，也就是数组，iteratee是传入的事件，context可以不传，如果传了的话 就会把iteratee事件赋给context对象
+    _.each = _.forEach = function(obj, iteratee, context) {
+        iteratee = optimizeCb(iteratee, context);
+        var　 i, length;
+        if (isArrayLike(obj)) {
+            for (i = 0, length = obj.length; i < length; i++) {
+                iteratee(obj[i], i, obj);
+            }
+        } else {
+            var keys = _.keys(obj);
+            for (i = 0, length = keys.length; i < length; i++) {
+                iteratee(obj[keys[i]], keys[i], obj);
+            }
+        }
+        return obj;
     }
-})
+});

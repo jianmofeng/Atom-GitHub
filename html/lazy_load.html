@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片懒加载</title>
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 80%;
+            height: 4000px;
+            margin: 0 auto;
+        }
+
+        .img-area {
+            width: 100%;
+            height: 700px;
+            margin-top: 50px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="img-area">
+            <img class="my-photo" alt="loading" data-src="../img/img4.png">
+        </div>
+        <div class="img-area">
+            <img class="my-photo" alt="loading" data-src="../img/img5.png">
+        </div>
+        <div class="img-area">
+            <img class="my-photo" alt="loading" data-src="../img/img6.png">
+        </div>
+        <div class="img-area">
+            <img class="my-photo" alt="loading" data-src="../img/img7.png">
+        </div>
+        <div class="img-area">
+            <img class="my-photo" alt="loading" data-src="../img/img10.png">
+        </div>
+    </div>
+</body>
+<script>
+    //PS 只支持Chrome5.1+ 以上版本 火狐也支持
+    var io = new IntersectionObserver(icarr => {
+        icarr.forEach(function(icchild) {
+            var el = icchild.target;
+            var inter = icchild.intersectionRatio;
+            if (inter > 0 && inter <= 1) {
+                login(el);
+            };
+            el.onload = el.onerror = () => {
+                io.unobserve(el);
+            };
+        });
+    });
+
+    (function ic() {
+        var imgs = Array.from(document.querySelectorAll('.my-photo'));
+        imgs.forEach(item => {
+            io.observe(item);
+        });
+    })()
+
+    function login(el) {
+        if (!el.src) {
+            var src = el.dataset.src;
+            el.src = src;
+        }
+    }
+    //ic();
+</script>
+
+</html>

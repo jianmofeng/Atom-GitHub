@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var myObject = (function() {
+            var value = 0;
+            return {
+                increment: function(inc) {
+                    return value += typeof inc === 'number' ? inc : 1;
+
+                },
+                getValue: function() {
+                    return value;
+                }
+            }
+        }());
+        //myObject.increment(1);
+        var quo = function(status) {
+            return {
+                get_status: function() {
+                    return status;
+                }
+            };
+        };
+        var myQuo = quo('amazed');
+        myQuo.get_status() //amazed
+    </script>
+</body>
+
+</html>

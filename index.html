@@ -1,69 +1,55 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<style>
-			.progr {
-				position: fixed;
-				top: 0;
-				left: 0;
-				height: 3px;
-				background: #2a6496;
-			}
-			
-			body {
-				height: 2000px;
-			}
-			.btn{
-				width:50px;
-				height: 20px;
-				position: fixed;
-				left: 40%;
-				top: 20%;
-				cursor: pointer;
-			}
-		</style>
-		<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
-	</head>
-
-	<body>
-		<div class="progr">
-			<select name="" id="" class="selectone">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</select>
-		</div>
-		<button class="btn btn-danger"></button>
-		
-	</body>
-	<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
-	<script>
-		var optionsize = $('.selectone option:not(:first-child)').length;
-		console.log(optionsize);
-		(function() {
-			var wh = window.innerHeight; //浏览器窗口的内部高度
-			var h = document.body.getBoundingClientRect().height;//设置的body的高度
-			var dh = h - wh;
-			window.addEventListener('scroll', function() {
-				window.requestAnimationFrame(function() {//将告知浏览器你马上要开始动画效果了，后者需要在下次动画前调用相应方法来更新画面。这个方法就是传递给window.requestAnimationFrame()的回调函数。
-					var percent = Math.max(0, Math.min(1, window.pageYOffset / dh));
-					document.querySelector(".progr").style.width = percent * 100 + '%';//类jquery选择器
-				})
-			}, false);
-		})();
-		function object(sum, fi) {
-			this.sum = sum;
-			this.fi = fi;
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<style>
+		.progr {
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 3px;
+			background: #2a6496;
 		}
-		var lick = new object(1,2);
-		$.ajax({
-			type:"get",
-			url:"",
-			async:true
-		});
-	</script>
+
+		body {
+			height: 2000px;
+		}
+
+		.btn {
+			width: 50px;
+			height: 20px;
+			position: fixed;
+			left: 40%;
+			top: 20%;
+			cursor: pointer;
+		}
+	</style>
+	<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="progr">
+	</div>
+	<button class="btn btn-danger"></button>
+
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
+<script>
+	var optionsize = $('.selectone option:not(:first-child)').length;
+	console.log(optionsize);
+	(function() {
+		var wh = window.innerHeight; //浏览器窗口的内部高度
+		var h = document.body.getBoundingClientRect().height; //设置的body的高度
+		var dh = h - wh;
+		window.addEventListener('scroll', function() {
+			window.requestAnimationFrame(function() { //将告知浏览器你马上要开始动画效果了，后者需要在下次动画前调用相应方法来更新画面。这个方法就是传递给window.requestAnimationFrame()的回调函数。
+				var percent = Math.max(0, Math.min(1, window.pageYOffset / dh));
+				document.querySelector(".progr").style.width = percent * 100 + '%'; //类jquery选择器
+			})
+		}, false);
+	})();
+</script>
+
 </html>

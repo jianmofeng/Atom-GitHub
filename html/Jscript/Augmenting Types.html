@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    JavaScript允许给语言的基本类型扩充功能。通过给Object.prototype添加方法，可以让该方法对所有对象都可用。 这样的方式对函数、数组、字符串、数字、正则表达式和布尔值同样适用。 举例来说，我们可以通过给Function.prototype增加方法来使得该方法对所有函数可用：
+    <script>
+        Function.prototype.method = function(name, func) {
+            this.prototype[name] = func;
+            return this;
+        };
+    </script>
+
+</body>
+
+</html>

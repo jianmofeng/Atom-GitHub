@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="content"></div>
+    <div class="content"></div>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        (function($) {
+
+            var Plugin = function(el, options) {
+
+                if (!(this instanceof Plugin)) return new Plugin(el, options);
+
+
+                var s = this;
+
+                s.selector = typeof el === 'object' ? el : $(el);
+
+                if (s.selector.length === 0) return;
+                if (s.selector.length > 1) {
+                    var plugins = [];
+
+                    s.selector.each(function() {
+                        var selector = this;
+                        plugins.push(new Plugin($(selector), options));
+                    });
+
+                    return plugins;
+                }
+
+                s.opts = $.extend(true, {}, s.defaults, options || {});
+                s.init();
+
+                return s;
+
+            }
+
+
+            Plugin.prototype = {
+                constructor: Plugin,
+
+                defaults: {
+                    content: '',
+                    color: 'red',
+                    color2: 'blue'
+                },
+
+                init: function() {
+
+                    this.render();
+                    this.events();
+                },
+
+                render: function() {
+
+                    this.selector.html(this.opts.content).css('color', this.opts.color);
+
+                },
+
+                events: function() {
+                    this.selector.on('click', $.proxy(this.changeColor, this));
+                },
+
+                changeColor: function(ev, color) {
+
+                    this.selector.css('color', color || this.opts.color2);
+
+                }
+            }
+
+            window.Plugin = Plugin;
+
+            return window.Plugin;
+
+        })(jQuery);
+
+
+        $(function() {
+
+            var obj = new Plugin('.content', {
+                content: '增加内容一'
+            });
+
+            console.log(obj);
+
+            var obj2 = new Plugin('.content2', {
+                content: '增加内容2222222222222222'
+            });
+
+            console.log(obj2);
+
+            $('.content2').on('click', function(ev) {
+
+                obj2[$('.content2').index(this)].changeColor(ev, 'orange');
+
+            });
+
+
+
+            // console.log(obj);
+            // console.log(obj2);
+        });
+    </script>
+    <div class="content2"></div>
+    <div class="content2"></div>
+</body>
+
+</html>

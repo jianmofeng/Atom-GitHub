@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    var render = {
+        getOrgList: function(keyword, label) {
+            var _this = this;
+            if (keyword) {
+                SWXHR.GET("/management-center/tenant/org/" + keyword + "/tenantOrgList", {}, "JSON")
+                    .done(function(data) {
+                        if (data.code == "success") {
+                            _this.ztree(data.data);
+                        }
+                    });
+            } else if (label === 'label') {
+                _this.orgList("/management-center/tenant/label/", label);
+            } else {
+                var data = {
+                    label: false
+                };
+                var html = template('searchOrg-tpl', data);
+                $('#searchOrg').html(html);
+                _this.orgList("/management-center/tenant/org/");
+
+            }
+        },
+        orgList: function(url, label) {
+            var _this = this;
+            SWXHR.GET(url, {}, "JSON")
+                .done(function(data) {
+                    if (data.code == "success") {
+                        if (!label) {
+                            data.data.unshift({
+                                orgName: frameAction.session_info.currentTenant.tenantName,
+                                parentId: "-2",
+                                tenantOrgId: "-1",
+                                esoption_li: '<li><a class="addorg">添加子部门</a></li>'
+                            });
+                        }
+                        _this.orgData = data.data;
+                        _this.ztree(data.data, label);
+                    }
+                });
+        },
+        ztree: function(data, label) {
+            var _this = this;
+            var nodeConfigData = {
+                key: {
+                    name: "orgName"
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: "tenantOrgId",
+                    pIdKey: "parentId"
+                }
+            };
+            var optionLi = '<li><a class="addorg">添加子部门</a></li>' + '<li><a class="editorg">编辑部门</a></li>' + '<li><a class="preMoveTreeeNode">上移</a></li>' + '<li><a class="nextMoveTreeeNode">下移</a></li>' + '<li><a class="deleteorg">删除</a></li>';
+
+            if (!label) {
+                $('.rightmain').removeClass('sw-empty-container');
+                var stree = swTree.init(data, "#app_auth_auth_tree", {
+                    swdata: {
+                        option_li: optionLi,
+                        callback: {
+                            onClick: function(treeNode) {
+                                sliderAction.data = treeNode;
+                                sliderAction.activeParentNode = treeNode.getParentNode();
+                                _this.getData(treeNode);
+                                if (orgMemberManagerAction.isFirst) {
+                                    orgMemberManagerAction.dataTable.init(treeNode);
+                                    orgMemberManagerAction.isFirst = false;
+                                } else {
+                                    orgMemberManagerAction.dataTable.refresh(treeNode);
+                                }
+
+                            }
+                        }
+                    },
+                    data: nodeConfigData,
+                    check: {
+                        enable: false,
+                        chkboxType: {
+                            "Y": "",
+                            "N": ""
+                        },
+                        chkStyle: "checkbox"
+                    },
+                    callback: {
+                        onExpand: function(event, treeId, treeNode) {
+                            z_treeOpen.push(treeNode.tId);
+                        },
+                        onCollapse: function(event, treeId, treeNode) {
+                            var index = z_treeOpen.indexOf(treeNode.tId);
+                            z_treeOpen.splice(index, 1);
+                        }
+                    }
+                });
+                var nodes = stree.getNodes();
+                var treeNodes = stree.transformToArray(nodes);
+                for (var i = 0; i < z_treeOpen.length; i++) {
+                    for (var j = 0; j < treeNodes.length; j++) {
+                        if (z_treeOpen[i] === treeNodes[j].tId) {
+                            treeNodes[j].open = true;
+                        }
+                    }
+
+                }
+                if (nodes.length !== 0) {
+                    var defaultNode = sliderAction.data ? sliderAction.data : treeNodes[0];
+                    parentNode = sliderAction.activeParentNode ? sliderAction.activeParentNode : nodes[0];
+                    parentNode = stree.getNodesByParam("tenantOrgId", parentNode.tenantOrgId)[0];
+
+                    if (parentNode) {
+                        stree.expandNode(parentNode, true);
+                        stree.expandNode(defaultNode, true);
+                    }
+                    if (data && data.length !== 0) {
+                        if (defaultNode.tenantOrgId) {
+                            defaultNode = stree.getNodeByParam("tenantOrgId", defaultNode.tenantOrgId);
+                            console.log(defaultNode);
+                            defaultNode = defaultNode ? defaultNode : treeNodes[1];
+                            $('#' + defaultNode.tId + "_a").trigger("click");
+                        } else {
+                            defaultNode = stree.getNodeByParam("tenantLabId", defaultNode.tenantLabId);
+                            defaultNode = defaultNode ? defaultNode : treeNodes[0];
+                            $('#' + defaultNode.tId + "_a").trigger("click");
+                        }
+                    }
+                }
+                _this.stree = stree;
+            } else {
+                if (data.length === 0) {
+                    $('.rightmain').addClass('sw-empty-container');
+                } else
+                    $('.rightmain').removeClass('sw-empty-container');
+                var stree = swTree.init(data, "#app_auth_auth_tree", {
+                    swdata: {
+                        option_li: optionLi,
+                        callback: {
+                            onClick: function(treeNode) {
+                                sliderAction.Labeldata = treeNode;
+                                sliderAction.LabelactiveParentNode = treeNode.getParentNode();
+                                _this.getData(treeNode);
+                                if (orgMemberManagerAction.isFirst) {
+                                    orgMemberManagerAction.dataTable.init(treeNode);
+                                    orgMemberManagerAction.isFirst = false;
+                                } else {
+                                    orgMemberManagerAction.dataTable.refresh(treeNode);
+                                }
+                                _this.currentNewNode = treeNode
+                            }
+                        }
+                    },
+                    data: nodeConfigData,
+                    check: {
+                        enable: false,
+                        chkboxType: {
+                            "Y": "",
+                            "N": ""
+                        },
+                        chkStyle: "checkbox"
+                    }
+                });
+                var nodes = stree.getNodes();
+                var treeNodes = stree.transformToArray(nodes);
+
+                if (nodes.length !== 0) {
+                    var defaultNode = sliderAction.Labeldata ? sliderAction.Labeldata : nodes[0],
+                        parentNode = sliderAction.LabelactiveParentNode ? sliderAction.LabelactiveParentNode : nodes[0];
+                    parentNode = stree.getNodesByParam("tenantOrgId", parentNode.tenantOrgId)[0];
+
+                    if (parentNode) {
+                        stree.expandNode(parentNode, true);
+                        stree.expandNode(defaultNode, true);
+                    }
+                    console.log(defaultNode)
+                    if (data && data.length !== 0) {
+                        defaultNode = stree.getNodeByParam("tenantLabId", defaultNode.tenantLabId);
+                        defaultNode = defaultNode ? defaultNode : treeNodes[0];
+                        $('#' + defaultNode.tId + "_a").trigger("click");
+                    }
+                }
+                _this.stree = stree;
+            }
+
+
+            return stree;
+        },
+    }
+</script>
+</html>

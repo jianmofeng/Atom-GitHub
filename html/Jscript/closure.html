@@ -9,29 +9,57 @@
 </head>
 
 <body>
+    <button>
+        refash
+    </button>
+    <input type="text" name="nn" value="123">
+    <input type="text" name="nn" value="456">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script>
-        var myObject = (function() {
-            var value = 0;
-            return {
-                increment: function(inc) {
-                    return value += typeof inc === 'number' ? inc : 1;
-
-                },
-                getValue: function() {
-                    return value;
-                }
+        var c = $('input[name="nn"]').val();
+        var arr = [1, 2, 1, 2, 1, 3, 4],
+            t = true,
+            f = true;
+        for (var i in arr) {
+            if (arr[i] == 1) {
+                t = false;
+            } else {
+                t = true;
             }
-        }());
-        //myObject.increment(1);
-        var quo = function(status) {
-            return {
-                get_status: function() {
-                    return status;
-                }
-            };
-        };
-        var myQuo = quo('amazed');
-        myQuo.get_status() //amazed
+            if (arr[i] == 2) {
+                f = false
+            }
+        }
+        if (!t) $('.isSupplier :first').html('+' + ①)
+        if (!f) $('.isSupplier :first').html('+' + ②)
+        // var myObject = (function() {
+        //     var value = 0;
+        //     return {
+        //         increment: function(inc) {
+        //             return value += typeof inc === 'number' ? inc : 1;
+        //
+        //         },
+        //         getValue: function() {
+        //             return value;
+        //         }
+        //     }
+        // }());
+        // //myObject.increment(1);
+        // var quo = function(status) {
+        //     return {
+        //         get_status: function() {
+        //             return status;
+        //         }
+        //     };
+        // };
+        // var myQuo = quo('amazed');
+        // myQuo.get_status() //amazed
+        // var c = 1.22;
+        // console.log(isNaN('jkj'))
+        // 1.3333.toFixed(2)
+        // $('button').click(function() {
+        //     location.reload([true])
+        // })
     </script>
 </body>
 

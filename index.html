@@ -32,13 +32,40 @@
 <body>
 	<div class="progr">
 	</div>
-	<button class="btn btn-danger"></button>
+	<input type="text" id="change" name="conopendate">
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
+	<button class="btn btn-danger">
+		
+	</button>
 
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 <script>
 	var optionsize = $('.selectone option:not(:first-child)').length;
-	console.log(optionsize);
+	//console.log(optionsize);
 	(function() {
 		var wh = window.innerHeight; //浏览器窗口的内部高度
 		var h = document.body.getBoundingClientRect().height; //设置的body的高度
@@ -51,5 +78,17 @@
 		}, false);
 	})();
 </script>
-
+<script>
+	// var btns = $('body>.btn');
+	// $.each(btns,function(i,item){
+	// 	var $(item) = $(item);
+	// 	if($(item).find('span').attr('data-i18n'))
+	// })
+	for(var i=0;i<3;i++){
+		console.log(i)
+	}
+	$("input[name='conopendate']").change(function(){
+		alert(1)
+	})   
+</script>
 </html>

@@ -6,7 +6,7 @@
 	<title>使用css来实现悬浮框功能</title>
 
 	<style>
-		.cc {
+		/*.cc {
 			width: 1000px;
 			height: 500px;
 		}
@@ -29,7 +29,7 @@
 			position: absolute;
 			left: -1px;
 			top: 22px;
-		}
+		}*/
 	</style>
 </head>
 
@@ -38,21 +38,43 @@
 		<img src="../img/111.png" alt="">
 		<div class="msg" data-msg="commit">11111</div>
 	</div>
+	<table border="1" width="200">
+		<tr>
+			<td class="yi">1</td>
+			<td class="er">2</td>
+			<td></td>
+			<td id="addrow">增行</td>
+		</tr>
+		<tr>
+			<td class="yi">3</td>
+			<td class="er">4</td>
+			<td></td>
+			<td id="addrow2">增行</td>
+		</tr>
+	</table>
 	<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
 	<script src="../js/mar.js" charset="utf-8"></script>
 	<script>
-		var buz = {
-			fog: 'stack'
-		};
-
-		// for (var name in buz) {
-		// 	if (buz.hasOwnProperty(name)) {
-		// 		alert("this is fog (" + name + ") for sure. Value: " + buz[name]);
-		// 	} else {
-		// 		alert(name); // toString or something else
-		// 	}
-		// }
-		//Mar.init();
+		$('#addrow').click(function(){
+			var yi = $(this).parent().find('.yi').text();
+			var er = $(this).parent().find('.er').text();
+			var tr = '<tr><td class="yi">'+ yi +'</td><td class="er">'+ er +'</td><td></td><td id="addrow">增行</td></tr>';
+			yi = '',er='';
+			$('table').append(tr)
+		}).
+		$('#addrow2').click(function(){
+			var yi = $(this).parent().find('.yi').text();
+			var er = $(this).parent().find('.er').text();
+			var tr = '<tr><td class="yi">'+ yi +'</td><td class="er">'+ er +'</td><td></td><td id="addrow">增行</td></tr>';
+			yi = '',er='';
+			$('table').append(tr)
+		})
+		var len = $('tr[name= "_offeramount"]').length;
+		var orreramount = $('tr[name= "_offeramount"]');
+		var arr = [];
+		for(var i=0;i<len;i++){
+			arr.push(orreramount[i].text())
+		}
 	</script>
 </body>
 

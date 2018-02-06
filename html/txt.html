@@ -5,8 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        #shadowBox {
+            background-color: #ddd;
+            margin: 0px auto;
+            padding: 10px;
+            width: 220px;
+            box-shadow: 0px 8px 10px gray,
+                        -10px 8px 15px gray, 
+                        10px 8px 15px rgb(107, 91, 91);
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="shadowBox">
+
+    </div>
+    <div class="shadowdox">
+        
+    </div>
+    <div class="shadofox">
+        
+    </div>
 </body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    console.log($('[class^="shado"]'))
+
+
+    SweetMenus.getButton(function(data) {
+        $.each(data, function(i, item) {
+            var str = ""
+            if (item.permissionCode == "sys_org_add") {
+                switch (options.orgType) {
+                    case 'P':
+                        option = '<li><a class="addDepartment hidden">新建部门</a></li>';
+                        break;
+                    case 'C':
+                        option = '<li><a class="addPlant hidden">新建工厂</a></li>';
+                        break;
+                    case 'R':
+                        option = '<li><a class="add hidden">新增子节点</a></li>';
+                        break;
+                }
+            }
+            if (item.permissionCode == "sys_org_update") {
+                switch (options.orgType) {
+                    case 'P':
+                        option = option + '<li><a class="updatePlant hidden">修改工厂</a></li>';
+                        break;
+                    case 'C':
+                        option = option + '<li><a class="updateCorp hidden">修改公司</a></li>';
+                        break;
+                    case 'R':
+                        option = option + '<li><a class="updateRoot hidden">修改</a></li>';
+                        break;
+                    case 'D':
+                        option = '<li><a class="updateD hidden">修改部门</a></li>';
+                        break;
+                    default:
+                        option = '<li><a class="updateO hidden">修改组织</a></li>';
+                        break;
+                }
+            }
+            if (item.permissionCode == "sys_org_delete") {
+                switch (options.orgType) {
+                    case 'P':
+                        option = option + '<li><a class="del hidden">删除</a></li>';
+                        break;
+                    case 'C':
+                        option = option + '<li><a class="del hidden">删除</a></li>';
+                        break;
+                    case 'D':
+                        option = option + '<li><a class="del hidden">删除</a></li>';
+                        break;
+                    case 'R':
+                        break;
+                    default:
+                        option = option + '<li><a class="del hidden">删除</a></li>';
+                        break;
+                }
+            }
+        });
+        $('.open_drop .hidden').remove();
+    });
+
+            // setTimeout(function() {
+        //     SweetMenus.getButton(function(data) {
+        //         $.each(data, function(i, item) {
+        //             var str = ""
+        //             if (item.permissionCode == "sys_org_add") {
+        //                 $('.add').removeClass('hidden');
+        //             }
+        //             if (item.permissionCode == "sys_org_update") {
+        //                 $('.updateRoot').removeClass('hidden');
+        //                 $('.updateCorp').removeClass('hidden');
+        //             }
+        //             if (item.permissionCode == "sys_org_delete") {
+        //                 $('.del').removeClass('hidden');
+        //             }
+        //         });
+        //         $('.open_drop .hidden').remove();
+        //
+        //     });
+        // }, 50)
+                                //阻止点击下拉箭头时触发click事件
+                        // if (userAddCtrl.isFirst) {
+                        //     userAddCtrl.isFirst = false;
+                        // } else {//}
+</script>
 </html>

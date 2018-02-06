@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{message}}
+        <input type="text" v-model="message">
+    </div>
+    <div id="export">
+        <my-component></my-component>
+        <myson-component></myson-component>  
+        <ol>
+            <todo-item v-for="item in groceryList"
+                       v-bind:attr = "item"
+                       v-bind:key="item.id">
+            </todo-item>
+        </ol>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.4.4/vue.min.js"></script>
+</body>
+    <script>
+        var render = new Vue({
+            el:'#app',
+            data:{
+                message:'Hello Vue'
+            },
+        })
+        //组件
+        //要注册一个全局组件，可以使用 Vue.component(tagName, options)。例如：/n  注意确保在初始化根实例之前注册组件
+        Vue.component('my-component', {
+            //选项
+            template:'<div>my name is dashuaibi</div>'
+        })
+        //全局注册
+        // new Vue({
+        //     el:'#export',
+        //     //选项
+        // })
+        //局部注册
+        // 注册到局部可通过某个Vue实例/组件的实例选项components注册仅在其作用域中可用的组件：
+        var Child = {
+            template: '<div> my son is dashuaibi !</div>'
+        }
+        var option = {
+            props:['attr'],
+            template:'<li><span>{{ attr.id }}</spen>{{ attr.text }}</li>'
+        }
+        new Vue({
+            el:'#export',
+            data: {
+                groceryList: [
+                { id: 0, text: '蔬菜' },
+                { id: 1, text: '奶酪' },
+                { id: 2, text: '随便其它什么人吃的东西' }
+                ]
+            },
+            components:{
+                'myson-component': Child,
+                'todo-item': option
+            }
+        })
+        //data 必须是函数 构造Vue实例时传入的各种选项大多数都可以在组建中使用 只有一个例外 data必须是函数。
+        
+    </script>
+</html>
